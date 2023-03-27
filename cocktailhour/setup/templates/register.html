@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        {% include "base.html" %}
+
+        {% block content %} 
+        
+        {% load crispy_forms_tags %}         
+        
+        <!--Register--> 
+        <div class="container py-5">
+            <h1>Register</h1>
+            <form action = "" method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        <p>{{ field.label }}: <br> {{ field }}</p> 
+                        {% for error in field.errors %}
+                            <small style="color: red">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endfor %}                   
+                <button class="btn btn-primary" type="submit">Register</button>
+            </form>
+            <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
+        </div>
+        
+        {% endblock %}
+        <script src="" async defer></script>
+    </body>
+</html>

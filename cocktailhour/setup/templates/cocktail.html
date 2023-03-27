@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        {% include 'base.html'%}
+        {% load static %}
+        {% block content %}
+          <div class = "container">
+            <div class = "text-center container">
+              <br>
+              <h2 class = "text-center">Search for your favorite Cocktail</h2> 
+              <br>
+              <form method="GET">
+                <input type = "text" name = "name" placeholder="Search..." class = "text-center">
+                <button type = "submit" class = "btn-danger btn-sm">SEARCH</button>
+              </form> 
+            </div> 
+            <br><br>
+            {% for cocktail in cocktailData %}
+            <div class="col-md-4 col-sm-6 col-lg-3">
+              <div class="card">
+                {% load staticfiles %}
+                <img class="card-img-top" src="{{static/cocktail.image}}" alt="Card image cap">
+                <div class="card-body text-center">
+                  <p class="card-title">{{ cocktail.strInstructions}}</p>
+                  <hr>
+                  <ul>
+                    <li class="card-text">{{ cocktail.ingredient1 }}</li>
+                    <li class="card-text">{{ cocktail.ingredient2 }}</li>
+                    <li class="card-text">{{ cocktail.ingredient3 }}</li>
+                    <li class="card-text">{{ cocktail.ingredient4 }}</li>
+                  </ul>
+                  <a href="{% url 'detail' cocktail.cocktail %}"
+                  ><input
+                    type="submit"
+                    value="Learn More"
+                    class="btn btn-danger btn-sm"
+                    type="button"
+                /></a>
+                </div>
+              </div>
+              <br><br><br>
+            </div>
+          {% endfor %}
+            
+          </div>
+        {% endblock %}
+        
+    </body>
+</html>

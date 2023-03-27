@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        {% extends 'base.html' %}
+
+        {% block title %}Home{% endblock %}
+        
+        {% block content %}
+        {% if user.is_authenticated %}
+          Hi {{ user.username }}!
+        {% else %}
+          <p>You are not logged in</p>
+          <a href="{% url 'login' %}">Log In</a>
+        {% endif %}
+        <div class="row">
+          {% for cocktail in allCocktails %}
+            <div class="col-md-4 col-sm-6 col-lg-3">
+              <div class="card">
+                <img class="card-img-top" src="{{ cocktail.strDrinkThumb }}" alt="Card image cap">
+                <div class="card-body text-center">
+                  <p class="card-title">{{ cocktail.drinkName }}</p>
+                  <hr>
+                  <ul>
+                    <li class="card-text">{{ cocktail.ingredient1 }}</li>
+                    <li class="card-text">{{ cocktail.ingredient2 }}</li>
+                    <li class="card-text">{{ cocktail.ingredient3 }}</li>
+                    <li class="card-text">{{ cocktail.ingredient4 }}</li>
+                  </ul>
+                  <a href="/templates/{{cocktail.cocktail}}"
+                  ><input
+                    type="submit"
+                    value="Learn More"
+                    class="btn btn-danger btn-sm"
+                    type="button"
+                /></a>
+                </div>
+              </div>
+              <br><br><br>
+            </div>
+          {% endfor %}
+        </div>
+        {% endblock %}
+        
+        <script src="" async defer></script>
+    </body>
+</html>
