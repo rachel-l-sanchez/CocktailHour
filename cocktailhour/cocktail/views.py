@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import permission_required, login_required
 from django.shortcuts import  render, redirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages``
+from django.contrib import messages
 from django.views import View
 from .models import Cocktail
 from django.shortcuts import  render, redirect

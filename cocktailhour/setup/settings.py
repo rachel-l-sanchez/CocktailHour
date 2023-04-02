@@ -49,8 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'cocktail'
-
+    'cocktail',
+    'django_extensions',
+    'tailwind',
+    'cocktailhour',
+    'django_browser_reload'
 ]
 
 MIDDLEWARE = [
@@ -61,9 +64,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware'
+]
+
+STATICFILES_DIRS = [
+    str(BASE_DIR.joinpath('uploads'))
 ]
 
 ROOT_URLCONF = 'setup.urls'
+
+TAILWIND_APP_NAME = 'cocktailhour'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 TEMPLATES = [
     {
