@@ -1,6 +1,4 @@
 from django.contrib import admin
-
-# Register your models here.
 from .models import Cocktail
 from django.contrib.auth.admin import UserAdmin
 from .forms import UserRegistrationForm
@@ -20,6 +18,7 @@ from django.contrib import admin
 #             }
 #         )
 #     )
+
 
 admin.site.register(Cocktail)
 # admin.site.register(User, UserAdmin)

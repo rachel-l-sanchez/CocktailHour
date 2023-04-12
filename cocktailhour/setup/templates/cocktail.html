@@ -36,71 +36,53 @@
         {% block content %}
         <section class="flex flex-col items-center justify-center mb-22">
           <span class="text-center font-bold my-20">
-              <a
-                  href="https://egoistdeveloper.github.io/twcss-to-sass-playground/"
-                  target="_blank"
-                  class="text-blue-600">
-                  Convetert to SASS
-              </a>
       
               <hr class="my-4" />
       
-              <a
-                  href="https://unsplash.com/s/photos/coffee"
-                  target="_blank"
-                  class="text-blue-600">
-                  Image Source
-              </a>
-      
               <hr class="my-4" />
       
-              <p>
-                  |
-              </p>
-      
               <hr class="my-4" />
-              <h2 class = "text-center">Search for your favorite Cocktail</h2> 
               <br>
-              <form method="GET">
-                <input type = "text" name = "name" placeholder="Search..." class = "text-center">
-                <button type = "submit" class = "btn-danger btn-sm">SEARCH</button>
-              </form> 
+              <form action="{% url 'search_results' %}" method="get">
+                <input name="q" type="text" placeholder="Search Cocktails...">
+              </form>
           </span>
       </section>
     
         <section x-data="xData()" class="bg-gray-100 dark:bg-gray-900 py-10 px-12">
           <!-- Card Grid -->
-          {% for cocktail in cocktailData %}
-
+            {% for cocktail in cocktailData %}
           <div
               class="grid grid-flow-row gap-8 text-neutral-600 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               <template x-for="post in posts">
                   <!-- Card Item -->
                   <div
                       class="my-8 rounded shadow-lg shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800 duration-300 hover:-translate-y-1"
-                      x-for="(post, index) in posts">
+                      x-for="(cocktail) in cocktailData">
                       <!-- Clickable Area -->
-                      <a _href="link" class="cursor-pointer">
+                      <a href="{% url 'detail' cocktail.drinkName %}" class="cursor-pointer">
+                        
                           <figure>
                               <!-- Image -->
                               {% load static %}
                               <img
-                                  :src="post.image + '?auto=format&fit=crop&w=400&q=50'" src="{% static cocktail.image %}}" alt = "cocktail image"
+                                 src="{{cocktail.image }}" style="display:block;" width="100%" height="100%" 
+                                  alt = "cocktail image"
                                   class="rounded-t h-72 w-full object-cover" />
       
                               <figcaption class="p-4">
                                   <!-- Title -->
                                   <p
                                       class="text-lg mb-4 font-bold leading-relaxed text-gray-800 dark:text-gray-300"
-                                      x-text="post.title">
-                                      {{ cocktail.drinkName}}</p>
+                                      x-text={{cocktail.strDrink}}>
+                                      {{ cocktail.drink}}</p>
 
                                   </p>
       
                                   <!-- Description -->
                                   <small
                                       class="leading-5 text-gray-500 dark:text-gray-400"
-                                      x-text="post.description">
+                                      x-text={{cocktail.instructions}}>
                                       <!-- Post Description -->{{cocktail.instructions}}
                                   </small>
                                   <ul>
@@ -109,15 +91,13 @@
                                     <li class="card-text">{{ cocktail.ingredient3 }}</li>
                                     <li class="card-text">{{ cocktail.ingredient4 }}</li>
                                   </ul>
-                                  <a href="{% url 'detail' cocktail.cocktail_uid %}">See More</a>
-                                  <a href="{% url 'updateRecipe' cocktail.cocktail_uid %}">Edit Recipe</a>
-
                                   <input
                                     type="submit"
                                     value="Learn More"
                                     class="btn btn-danger btn-sm"
                                     type="button"
                                 /></a>
+                              
                               </figcaption>
                           </figure>
                       </a>

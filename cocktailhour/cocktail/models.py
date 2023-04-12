@@ -3,12 +3,12 @@ from django.db import models
 from django.contrib.auth.models import (
     User
 )
+import base64
 
 
 class Cocktail(models.Model):
-    image = models.CharField(max_length = 200 )
-    cocktail_uid = models.CharField(null = False, blank = False, max_length = 200, default = "None")
-    id = models.AutoField(primary_key=True, editable=False)
+    image = models.ImageField(null=True, default=None, blank=True)
+    cocktail_id = models.IntegerField(editable=False, unique = False, default = 1)
     drinkName = models.CharField(max_length = 200, default = "")
     instructions = models.TextField()
     ingredient1 = models.CharField(max_length = 200, default = "")
@@ -49,19 +49,31 @@ class Cocktail(models.Model):
         app_label = 'cocktail'
 
 
-
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.set_cocktail()                                 # calling the set_uid function
 
     def set_cocktail(self):
-        if not self.cocktail_uid:                               # if uid of the instance is blank
-            cocktail_uid =str(self.cocktail_uid)       # generating the uid
-            cocktail= Cocktail.objects.get(cocktail_uid=self.cocktail_uid)     # getting the instance
-            cocktail.cocktail_uid = cocktail_uid                         # allocating the value
+        if not self.cocktail_id:                               # if uid of the instance is blank
+            cocktail_id =str(self.cocktail_id)       # generating the uid
+            cocktail= Cocktail.objects.get(cocktail_id=self.cocktail_id)     # getting the instance
+            cocktail.cocktail_id = cocktail_id                         # allocating the value
             cocktail.save()                              # saving the instance
 
     def __str__(self):
-        return self.cocktail_uid
+        return self.cocktail_id
 
 
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User,on_delete = models.CASCADE)
+    favorites = models.ManyToManyField(Cocktail, related_name='favorited_by', null=True, blank=True)
+
+
+    def __str__(self):
+        return self.user.username
+
+class CocktailBookmark(models.Model):
+    recipe = models.ForeignKey(Cocktail, on_delete = models.PROTECT, related_name = "bookmarks")
+    bookmarked_by = models.ForeignKey(User, on_delete =  models.PROTECT)
+    bookmarked_at = models.DateTimeField(auto_now_add = True)

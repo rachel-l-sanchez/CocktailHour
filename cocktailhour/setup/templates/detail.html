@@ -17,7 +17,7 @@
                 <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">From the blog</h1>
         
                 <div class="mt-8 lg:-mx-6 lg:flex lg:items-center">
-                    <img class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96"  src="{{ cocktail.image }}">
+                    <img class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96"  src="{{ field.image }}">
 
                     <div class="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 ">
                         <h3 class="card-title text-center ">{{ cocktail.drinkName }}</h3>
@@ -44,11 +44,15 @@
                             <li>{{cocktail.measure15}} {cocktail.ingredient15}</li>
                         </ul>
                         <p class="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
-                           {{cocktail.instructions}
+                           {{field.instructions}
                         </p>                        
                     </div>
                 </div>
             </div>
+            <form id="favorite{{detail.cocktail_id}}" method="POST" action="{% url 'favorite' cocktail.cocktail_id %}">
+                {% csrf_token %}
+                <input type="hidden" name="supporttype" />
+                <input type="submit" value="Add Recipe to Favorites" />
         </section>
         {% endblock %}
     </body>
