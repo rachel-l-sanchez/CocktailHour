@@ -38,13 +38,12 @@ urlpatterns = [
     path("login", views.login_request, name="login"),
     path("logout", views.logout_request, name= "logout"),
     path("accounts/", include("django.contrib.auth.urls")),  # new
-    path(r'edit/<int:id>', views.updateCocktail, name='updateRecipe'),
     # path(r'', views.create, name='create'),
     path(r'', views.get_cocktails, name='cocktails'),
     path('delete/<id>/', views.delete, name='delete'),
-    path(r'get/cocktail/<image>', views.detail, name='detail'),
+    path(r'get/cocktail/<id>', views.detail, name='detail'),
     path("search/", SearchResultsView.as_view(), name="search_results"),
-    path("favorite/", views.favorite, name="favorite"),
+    path("favorite/<id>", views.favorite, name="favorite"),
     path('__reload__/', include("django_browser_reload.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
