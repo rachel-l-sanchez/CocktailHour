@@ -35,7 +35,10 @@ class CreateForm(forms.Form):
         model =  Cocktail
         fields = ("info")
 
-class EditForm(forms.Form):
+class EditForm(forms.ModelForm):
     class Meta:
         model =  Cocktail
-        fields = ("info")
+        fields = ("id", "drinkName", "ingredient1", "ingredient2", "measure1", "measure2")
+
+    def __init__(self, *args, **kwargs):
+        super(EditForm, self).__init__(*args, **kwargs)

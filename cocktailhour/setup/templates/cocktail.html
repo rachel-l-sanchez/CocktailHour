@@ -31,7 +31,11 @@
     </style>
     </head>
     <body>
-        {% include 'base.html'%}
+        <nav>
+            <p>{% include 'login.html'%}</p>
+            <p>{% include 'register.html'%}</p>
+        </nav>
+
         {% load static %}
         {% block content %}
         <section class="flex flex-col items-center justify-center mb-22">

@@ -9,14 +9,17 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
-        {% include 'base.html'%}
+        <nav>
+            <p>{% include 'login.html'%}</p>
+            <p>{% include 'register.html'%}</p>
+        </nav>        
         {% load static %}
         {% block content %}
         <section class="bg-white dark:bg-gray-900">
             <div class="container px-6 py-10 mx-auto">
                 <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">Cocktail Recipe</h1>
                 <div class="mt-8 lg:-mx-6 lg:flex lg:items-center">
-                    <img class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96"  src="{{ field.image }}">
+                    <img class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96"  src="{{ cocktail.image }}">
 
                     <div class="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 ">
                         <h3 class="card-title text-center ">{{ cocktail.drinkName }}</h3>
@@ -55,6 +58,8 @@
                 <input type="submit" value="Add Recipe to Favorites" />
             </form>
             <a href="{% url 'delete' cocktail.id %}">Delete Favorite</a>
+            <a href="{% url 'updateRecipe' cocktail.id %}">Edit Recipe</a>
+
         </section>
         {% endblock %}
     </body>

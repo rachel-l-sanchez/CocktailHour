@@ -138,6 +138,52 @@ def register_request(request, **kwargs):
     context = {'form': form}
     return render (request=request, template_name="register.html", context={"form":form})
 
+def updateCocktail(request, id):
+    instance = Cocktail.objects.get(id=id)
+    form = EditForm(request.POST or None,request.FILES or None, instance = instance)
+    if request.method == 'POST':
+        editForm = form.save(commit = False)
+        image = editForm.image
+        instructions =editForm.instructions
+        drinkName = editForm.drinkName
+        ingredient1 = editForm.ingredient1
+        ingredient2 = editForm.ingredient2
+        ingredient3 =editForm.ingredient3
+        ingredient4= editForm.ingredient4
+        ingredient5 = editForm.ingredient5
+        ingredient6=editForm.ingredient6
+        ingredient7 = editForm.ingredient7
+        ingredient8=editForm.ingredient8
+        ingredient9 = editForm.ingredient9
+        ingredient10 = editForm.ingredient10
+        ingredient11=editForm.ingredient11
+        ingredient12 = editForm.ingredient12
+        ingredient13= editForm.ingredient13
+        ingredient14 = editForm.ingredient14
+        ingredient15 = editForm.ingredient15
+        measure1= editForm.measure1
+        measure2= editForm.measure2
+        measure3= editForm.measure3
+        measure4= editForm.measure4
+        measure5= editForm.measure5
+        measure6= editForm.measure6
+        measure7= editForm.measure7
+        measure8= editForm.measure8
+        measure9= editForm.measure9
+        measure10=editForm.measure10
+        measure11= editForm.measure11
+        measure12= editForm.measure12
+        measure13= editForm.measure13
+        measure14= editForm.measure14
+        measure15=editForm.measure15
+        category = editForm.category
+        glass = editForm.glass
+        alcoholic = editForm.alcoholic
+        editForm.save()
+        return redirect('cocktails')
+    form = EditForm(instance = instance)
+    return render(request, 'edit.html', {'form': form})
+
 def login_request(request):
     if request.method == "POST":
             form = AuthenticationForm(request, data=request.POST)
