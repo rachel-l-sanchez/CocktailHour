@@ -10,6 +10,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.views import View
 from .models import Cocktail
+from django.contrib.auth.forms import AuthenticationForm #add this
 from django.shortcuts import  render, redirect
 from .forms import UserRegistrationForm, EditForm, CreateForm
 from django.contrib import messages
@@ -21,7 +22,11 @@ from django.http import HttpResponse
 from .models import Cocktail, CocktailBookmark, UserProfile, User
 import base64
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth import get_user_model, User
+from django.http import HttpResponse
+from django.db import transaction
+from .forms import *
+from django.contrib.auth import login import login_required
 
 def get_cocktails(request):
     f = r"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita"
@@ -122,20 +127,18 @@ def base64_to_image(base64_string):
 
 
 def delete(request,id):
-    bookmarkToDelete = get_object_or_404(UserProfile, id= id)
+    bookmarkToDelete = get_object_or_404(Cocktail, id = id)
     bookmarkToDelete.delete()
     return redirect('cocktails')
 
 def register_request(request, **kwargs):
-    form = UserRegistrationForm(request.POST)    
+    form = UserCreationForm(request.POST or None)    
     if request.method == 'POST':
         if form.is_valid():
             user = form.save()
-            user.set_password(user.password)
             user.save()
             login(request,user)
         return redirect('cocktails')
-    context = {'form': form}
     return render (request=request, template_name="register.html", context={"form":form})
 
 def updateCocktail(request, id):
@@ -228,14 +231,31 @@ class SearchResultsView(ListView):
         object_list = Cocktail.objects.filter(
             Q(drinkName__icontains=query) | Q(instructions__icontains=query)
         )
-        return object_list
+        return object_list  
 
-
-
-def favorite(request, id):
+@login_required
+@transaction.atomic
+def favorite(request):
     if request.method == 'POST':
-        favorite = Cocktail.objects.get(id=id)
-        user = request.user
-        user.favorites.add(favorite)
-        messages.add_message(request, messages.INFO, 'Cocktail Favorited.')
-        return redirect('home')
+        profile_form = ProfileForm(request.POST, instance = request.user.user_profile)
+        favorite_form = FavoriteForm(request.POST, instance = request.user.favorites)
+        if profile_form.is_valid() and favorite_form.is_valid():
+            profile_form.save()
+            favorite_form.save()
+            messages.success(request,_('Your profile was successfully updated'))
+            return redirect('detail')
+        else:
+            messages.error(request,_('Please correct the errors'))
+    else:
+        profile_form = ProfileForm(instance = request.user.user_profile)
+        favorite_form = FavoriteForm(instance = request.user.favorites)
+        # cocktail = Cocktail.objects.get(id=cocktail_id)
+        # user = get_object_or_404(User, id=request.user.id)
+        # user.user_profile.favorites.add(cocktail)
+        # user.save()
+        # user = request.user
+        # user.favorites.create(cocktail)
+        # profile = UserProfile.objects.get(id = user_id)
+        # UserProfile = get_user_model()
+        # user.favorites(cocktail)
+    return render(request, 'detail.html', {'profile_form': profile_form, 'favorite_form': favorite_form})

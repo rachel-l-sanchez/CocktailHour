@@ -53,8 +53,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'tailwind',
     'cocktailhour',
-    'django_browser_reload'
+    'setup',
+    'django_browser_reload',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,7 +85,7 @@ INTERNAL_IPS = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [    os.path.join(DIRNAME, 'templates/')],
+        'DIRS': [    os.path.join(DIRNAME, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,7 +108,8 @@ PASSWORD_HASHERS = [
 WSGI_APPLICATION = 'setup.wsgi.application'
 LOGIN_REDIRECT_URL = "login"
 LOGOUT_REDIRECT_URL = "login"
-
+REGISTER_REDIRECT_URL = 'cocktails'
+LOGIN_URL = 'cocktails'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

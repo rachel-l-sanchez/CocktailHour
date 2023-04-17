@@ -12,6 +12,7 @@
         <nav>
             <p>{% include 'login.html'%}</p>
             <p>{% include 'register.html'%}</p>
+            <p>{% include 'logout.html'%}</p>
         </nav>        
         {% load static %}
         {% block content %}
@@ -52,8 +53,10 @@
                 </div>
             </div>
             
-            <form method="POST" action="{% url 'favorite' cocktail.id %}">
+            <form method="POST" action="{% url 'favorite'%}">
                 {% csrf_token %}
+                {{profile_form.as_p}}
+                {{favorite_form.as_p}}
                 <input type="hidden" name="supporttype" />
                 <input type="submit" value="Add Recipe to Favorites" />
             </form>

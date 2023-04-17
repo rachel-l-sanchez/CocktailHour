@@ -1,11 +1,17 @@
 # Create your models here.
+
 from django.db import models
 from django.contrib.auth.models import (
     User
 )
 import base64
+from django.db.models.signals import *
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
+    
 class Cocktail(models.Model):
     image = models.ImageField(null=True, default=None, blank=True)
     cocktail_id = models.IntegerField(editable=False, unique = False, default = 1)
@@ -63,17 +69,49 @@ class Cocktail(models.Model):
     def __str__(self):
         return self.cocktail_id
 
+# class User(models.Model):
+#     favorites = models.ManyToManyField(Cocktail, related_name='favorited_by', null=True, blank=True)
 
+#     def __str__(self):
+#         return self.user.username
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User,on_delete = models.CASCADE)
-    favorites = models.ManyToManyField(Cocktail, related_name='favorited_by', null=True, blank=True)
+# class UserProfile(models.Model):
+#     user = models.OneToOneField(User,on_delete = models.CASCADE)
 
+#     def __str__(self):  
+#           return "%s's profile" % self.user 
+    
+#     def create_user_profile(sender, instance, created, **kwargs):  
+#         if created:  
+#             profile, created = UserProfile.objects.get_or_create(user=instance)  
 
-    def __str__(self):
-        return self.user.username
+#     post_save.connect(create_user_profile, sender=User) 
+
+#     def __str__(self):
+#         return self.user.username
+
+    
 
 class CocktailBookmark(models.Model):
     recipe = models.ForeignKey(Cocktail, on_delete = models.PROTECT, related_name = "bookmarks")
     bookmarked_by = models.ForeignKey(User, on_delete =  models.PROTECT)
     bookmarked_at = models.DateTimeField(auto_now_add = True)
+
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name='user_profile')
+    favorites = models.ManyToManyField(Cocktail, related_name='favorites', null=True, blank=True)
+    bookmarked_at = models.DateTimeField(auto_now_add = True)
+
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, **kwargs):
+    instance.UserProfile.save()
+
