@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Cocktail, UserProfile, User
 from django.contrib.auth.admin import UserAdmin
-from .forms import UserRegistrationForm
 from django.contrib import admin 
 
 # class CustomUserAdmin(UserAdmin):

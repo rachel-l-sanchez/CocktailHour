@@ -35,10 +35,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("register/", views.register_request, name="register"),
     path("login/", views.login_request, name="login"),
-    path("setup/", include("setup.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
     path("logout/", views.logout_request, name= "logout"),
-    # path("templates/", include("django.contrib.auth.urls")),  # new
     path(r'edit/<id>', views.updateCocktail, name='updateRecipe'),
     # path(r'', views.create, name='create'),
     path(r'', views.get_cocktails, name='cocktails'),

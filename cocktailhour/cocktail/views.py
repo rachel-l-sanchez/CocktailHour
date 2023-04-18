@@ -12,7 +12,7 @@ from django.views import View
 from .models import Cocktail
 from django.contrib.auth.forms import AuthenticationForm #add this
 from django.shortcuts import  render, redirect
-from .forms import UserRegistrationForm, EditForm, CreateForm
+from .forms import EditForm, CreateForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.management.base import BaseCommand
@@ -22,11 +22,18 @@ from django.http import HttpResponse
 from .models import Cocktail, CocktailBookmark, UserProfile, User
 import base64
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model, User
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.db import transaction
 from .forms import *
-from django.contrib.auth import login import login_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+
 
 def get_cocktails(request):
     f = r"https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita"
@@ -81,39 +88,7 @@ def get_cocktails(request):
         category = i['strCategory'],
         cocktail_id = i['idDrink'])
         cocktailData.save()
-
-        # Cocktail.objects.create(image = image,
-        # instructions = instructions,
-        # drinkName = drinkName, ingredient1 = ingredient1,
-        # ingredient2 = ingredient2, ingredient3 = ingredient3, ingredient4= ingredient4, 
-        # ingredient5 = ingredient5, ingredient6=ingredient6,
-        # ingredient7 = ingredient7,
-        # ingredient8=ingredient8,
-        # ingredient9 = ingredient9, ingredient10 = ingredient10,
-        # ingredient11=ingredient11,
-        # ingredient12 = ingredient12, 
-        # ingredient13= ingredient13,
-        # ingredient14 = ingredient14,
-        # ingredient15 = ingredient15,
-        # measure1= measure1,
-        # measure2= measure2,
-        # measure3= measure3,
-        # measure4= measure4,
-        # measure5= measure5,
-        # measure6= measure6,
-        # measure7= measure7,
-        # measure8= measure8,
-        # measure9= measure9,
-        # measure10=measure10,
-        # measure11= measure11,
-        # measure12= measure12,
-        # measure13= measure13,
-        # measure14= measure14,
-        # measure15=measure15,
-        # category = category,
-        # glass = glass,
-        # alcoholic = alcoholic, cocktail_id = cocktail_id)
-        cocktailData = Cocktail.objects.all().order_by('cocktail_id')
+        cocktailData = Cocktail.objects.all().order_by('id')
     return render (request=request, template_name="cocktail.html", context = {'cocktailData': cocktailData})
 
 def cocktails(request):
@@ -131,15 +106,17 @@ def delete(request,id):
     bookmarkToDelete.delete()
     return redirect('cocktails')
 
-def register_request(request, **kwargs):
-    form = UserCreationForm(request.POST or None)    
-    if request.method == 'POST':
+@login_required
+def register_request(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            user.save()
-            login(request,user)
-        return redirect('cocktails')
+            form.save()
+            return redirect("/home")
+    else:
+        form = RegisterForm()
     return render (request=request, template_name="register.html", context={"form":form})
+
 
 def updateCocktail(request, id):
     instance = Cocktail.objects.get(id=id)
@@ -187,21 +164,22 @@ def updateCocktail(request, id):
     form = EditForm(instance = instance)
     return render(request, 'edit.html', {'form': form})
 
+@login_required
 def login_request(request):
     if request.method == "POST":
-            form = AuthenticationForm(request, data=request.POST)
-            if form.is_valid():
-                username = form.cleaned_data.get('username')
-                password = form.cleaned_data.get('password')
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    messages.info(request, f"You are now logged in as {username}.")
-                    return redirect("cocktails")
-                else:
-                    messages.error(request,"Invalid username or password.")
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}")
+                return redirect('/')
             else:
-                messages.error(request,"Invalid username or password.")
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"login_form":form})
 

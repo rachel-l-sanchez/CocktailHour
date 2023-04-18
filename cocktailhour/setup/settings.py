@@ -106,10 +106,11 @@ PASSWORD_HASHERS = [
 ]
 
 WSGI_APPLICATION = 'setup.wsgi.application'
-LOGIN_REDIRECT_URL = "login"
+LOGIN_REDIRECT_URL = "detail"
 LOGOUT_REDIRECT_URL = "login"
 REGISTER_REDIRECT_URL = 'cocktails'
 LOGIN_URL = 'cocktails'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
