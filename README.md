@@ -12,7 +12,7 @@ A cocktail recipe application using the cocktail API. Users can log in to their 
 4. Delete a recipe saved to your account
 5. View all recipes
 6. View one full recipe
-7. Search Images
+7. Search Cocktails
 
 ## Code Sample
 ```
