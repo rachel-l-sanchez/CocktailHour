@@ -94,7 +94,6 @@ class Cocktail(models.Model):
 class CocktailBookmark(models.Model):
     recipe = models.ForeignKey(Cocktail, on_delete = models.PROTECT, related_name = "bookmarks")
     bookmarked_by = models.ForeignKey(User, on_delete =  models.PROTECT)
-    bookmarked_at = models.DateTimeField(auto_now_add = True)
 
 
 

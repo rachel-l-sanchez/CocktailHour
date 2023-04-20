@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Cocktail, UserProfile
 from django.forms import ModelForm
@@ -15,7 +14,7 @@ class RegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None) # Now you use self.request to access request object.
-        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        super(RegisterForm, self).__init__(*args, **kwargs)
 
     def clean_password(self):
         password = self.cleaned_data['password1']
@@ -23,7 +22,7 @@ class RegisterForm(UserCreationForm):
         return password
 
     def save(self, commit=True):
-        user = super(NewUserForm, self).save(commit=False)
+        user = super(RegisterForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         if commit:
             user.save()

@@ -7,62 +7,164 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200&display=swap"
+            rel="stylesheet" />
+            <script
+    defer
+    src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Tailwind -->
+    <script src="https://cdn-tailwindcss.vercel.app/"></script>
+
     </head>
     <body>
         <nav>
-            <p>{% include 'login.html'%}</p>
-            <p>{% include 'register.html'%}</p>
-            <p>{% include 'logout.html'%}</p>
         </nav>        
         {% load static %}
         {% block content %}
-        <section class="bg-white dark:bg-gray-900">
-            <div class="container px-6 py-10 mx-auto">
-                <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">Cocktail Recipe</h1>
-                <div class="mt-8 lg:-mx-6 lg:flex lg:items-center">
-                    <img class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96"  src="{{ cocktail.image }}">
-
-                    <div class="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 ">
-                        <h3 class="card-title text-center ">{{ cocktail.drinkName }}</h3>
-
-                        <p class="text-sm text-blue-500 uppercase">{{cocktail.category}}</p>
+        <nav class="shadow">
+          
+            <div class="flex justify-between items-center py-6 px-10 container mx-auto">
+          
+              <div>
+                <h1 class="text-2xl font-bold bg-gradient-to-tr from-indigo-600 to-green-600 bg-clip-text text-transparent hover:cursor-pointer">Cocktail Hour</h1>
+              </div>
+              <div class="hover:cursor-pointer sm:hidden">
+                <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></spnan>
+                <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></spnan>
+                <spnan class="h-1 rounded-full block w-8 mb-1 bg-gradient-to-tr from-indigo-600 to-green-600"></spnan>
+              </div>
+              <div class="flex items-center">
         
-                        <p class="text-sm text-blue-500 uppercase">{{cocktail.alcoholic}}</p>
+                <ul class="sm:flex space-x-4 hidden items-center">
+                    <li><a href="{% url 'cocktails' %}" class="text-gray-700 hover:text-indigo-600 text-md "><h1 class="text-text-gray-600  py-2 hover:cursor-pointer hover:text-indigo-600">HOMEPAGE</h1></a></li>
 
-                        <ul>
-                            <li>{{cocktail.measure1}} {{cocktail.ingredient1}}</li>
-                            <li>{{cocktail.measure2}} {{cocktail.ingredient2}}</li>
-                            <li>{{cocktail.measure3}} {{cocktail.ingredient3}}</li>
-                            <li>{{cocktail.measure4}} {{cocktail.ingredient4}}</li>
-                            <li>{{cocktail.measure5}} {{cocktail.ingredient5}}</li>
-                            <li>{{cocktail.measure6}} {{cocktail.ingredient6}}</li>
-                            <li>{{cocktail.measure7}} {{cocktail.ingredient7}}</li>
-                            <li>{{cocktail.measure8}} {{cocktail.ingredient8}}</li>
-                            <li>{{cocktail.measure9}} {{cocktail.ingredient9}}</li>
-                            <li>{{cocktail.measure10}} {{cocktail.ingredient10}}</li>
-                            <li>{{cocktail.measure11}} {{cocktail.ingredient11}}</li>
-                            <li>{{cocktail.measure12}} {{cocktail.ingredient12}}</li>
-                            <li>{{cocktail.measure13}} {{cocktail.ingredient13}}</li>
-                            <li>{{cocktail.measure14}} {{cocktail.ingredient14}}</li>
-                            <li>{{cocktail.measure15}} {{cocktail.ingredient15}}</li>
-                        </ul>
-                        <p class="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
-                           {{cocktail.instructions}}
-                        </p>                        
-                    </div>
+                  <li><a href="{% url 'register' %}" class="text-gray-700 hover:text-indigo-600 text-md "><h1 class="text-text-gray-600  py-2 hover:cursor-pointer hover:text-indigo-600">SIGNUP</h1></a></li>
+                  <li><a href="{% url 'login' %}" class="text-gray-700 hover:text-indigo-600 text-md "> <h1 class="text-text-gray-600  py-2 hover:cursor-pointer px-4 rounded text-white bg-gradient-to-tr from-indigo-600 to-green-600 hover:shadow-lg">LOGIN</h1></a></li>
+                  {% if user.is_authenticated %}
+                  <li><a href="{% url 'logout' %}" class="text-gray-700 hover:text-indigo-600 text-md "><h1 class="text-text-gray-600  py-2 hover:cursor-pointer px-4 rounded text-white bg-gradient-to-tr from-indigo-600 to-green-600 hover:shadow-lg">LOGOUT</h1>
+                  </a></li>
+                  {% endif %}
+                </ul>
+                 
+
                 </div>
+              </div>
             </div>
-            
-            <form method="POST" action="{% url 'favorite'%}">
-                {% csrf_token %}
-                {{profile_form.as_p}}
-                {{favorite_form.as_p}}
-                <input type="hidden" name="supporttype" />
-                <input type="submit" value="Add Recipe to Favorites" />
-            </form>
-            <a href="{% url 'delete' cocktail.id %}">Delete Favorite</a>
-            <a href="{% url 'updateRecipe' cocktail.id %}">Edit Recipe</a>
+        </nav>
+        <section class="bg-white dark:bg-gray-900">
+            <div class=" rounded overflow-hidden border w-full lg:w-6/12 md:w-6/12 bg-white mx-3 md:mx-0 lg:mx-0">
+                <div class="w-full flex justify-between p-3">
+                  <div class="flex">
+                    <span class="pt-1 ml-2 font-bold text-sm">Cocktail Recipe</span>
 
+                  </div>
+                 
+                  <span class="px-2 hover:bg-gray-300 cursor-pointer rounded"><i class="fas fa-ellipsis-h pt-2 text-lg"></i></span>
+              
+                </div>
+                <div class="pt-2">
+                    <i class="far fa-heart cursor-pointer text-blue-500"></i>
+                    <span class="text-sm font-medium text-blue-500 uppercase">{{cocktail.category}}</span>
+                  </div>
+                <div class="pt-2">
+                    <i class="far fa-heart cursor-pointer"></i>
+                    <span class="text-sm text-blue-400 font-medium uppercase">{{cocktail.alcoholic}}</span>
+                  </div>
+                <img class="w-full bg-cover" src="{{ cocktail.image }}">
+
+                <div class="px-3 pb-2">
+                  <div class="pt-2">
+                    <i class="far fa-heart cursor-pointer"></i>
+                    <span class="text-sm text-gray-400 font-medium">{{ cocktail.drinkName }}
+                    </span>
+                  </div>
+                  <div class="pt-1">
+                    <div class="mb-2 text-sm">
+                      <span class="font-medium mr-2">
+                   
+                      </span>
+                    </div>
+                  </div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure1}} {{cocktail.ingredient1}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure2}} {{cocktail.ingredient2}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure3}} {{cocktail.ingredient3}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure4}} {{cocktail.ingredient4}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure5}} {{cocktail.ingredient5}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure6}} {{cocktail.ingredient6}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure7}} {{cocktail.ingredient7}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure8}} {{cocktail.ingredient8}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure9}} {{cocktail.ingredient9}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure9}} {{cocktail.ingredient10}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure10}} {{cocktail.ingredient11}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure11}} {{cocktail.ingredient11}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure12}} {{cocktail.ingredient12}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure13}} {{cocktail.ingredient13}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure14}} {{cocktail.ingredient14}}</div>
+                  <div class="text-sm mb-2 text-gray-400 cursor-pointer font-medium">{{cocktail.measure15}} {{cocktail.ingredient15}}</div>
+
+                  <div class="mb-2">
+
+                    <p class="mt-3 text-sm text-gray-500 dark:text-gray-300 md:text-sm">
+                        {{cocktail.instructions}}
+                     </p> 
+                  </div>
+                </div>
+              </div>
+            <div class='flex items-center justify-center min-h-screen bg-slate-200'>
+                <div class='flex flex-col'>
+                  <!-- Button -->
+                  <button type='button' class='break-inside bg-[#D20939] rounded-xl p-4 mb-4 w-full'>
+                    <div class='flex items-center space-x-4'>
+                      <svg width='32' height='32' viewBox='0 0 38 38' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                        <path
+                          d='M5.10714 0C3.75264 0 2.45362 0.538072 1.49585 1.49585C0.538072 2.45362 0 3.75264 0 5.10714V29.4643C0 30.8188 0.538072 32.1178 1.49585 33.0756C2.45362 34.0334 3.75264 34.5714 5.10714 34.5714H18.0714C17.5227 33.8418 17.0607 33.0508 16.6949 32.2143H5.10714C4.3778 32.2143 3.67832 31.9246 3.1626 31.4088C2.64687 30.8931 2.35714 30.1936 2.35714 29.4643V5.10714C2.35714 3.58914 3.58914 2.35714 5.10714 2.35714H29.4643C30.9823 2.35714 32.2143 3.58914 32.2143 5.10714V16.6949C33.0507 17.0602 33.8417 17.5216 34.5714 18.0699V5.10714C34.5714 3.75264 34.0334 2.45362 33.0756 1.49585C32.1178 0.538072 30.8188 0 29.4643 0H5.10714ZM8.64286 10.989C7.60094 10.989 6.60169 11.4029 5.86494 12.1397C5.12819 12.8764 4.71429 13.8757 4.71429 14.9176C4.71429 15.9595 5.12819 16.9587 5.86494 17.6955C6.60169 18.4322 7.60094 18.8461 8.64286 18.8461C9.68478 18.8461 10.684 18.4322 11.4208 17.6955C12.1575 16.9587 12.5714 15.9595 12.5714 14.9176C12.5714 13.8757 12.1575 12.8764 11.4208 12.1397C10.684 11.4029 9.68478 10.989 8.64286 10.989ZM7.07143 14.9176C7.07143 14.5008 7.23699 14.1011 7.53169 13.8064C7.82639 13.5117 8.22609 13.3461 8.64286 13.3461C9.05963 13.3461 9.45933 13.5117 9.75403 13.8064C10.0487 14.1011 10.2143 14.5008 10.2143 14.9176C10.2143 15.3343 10.0487 15.734 9.75403 16.0287C9.45933 16.3234 9.05963 16.489 8.64286 16.489C8.22609 16.489 7.82639 16.3234 7.53169 16.0287C7.23699 15.734 7.07143 15.3343 7.07143 14.9176ZM4.71429 25.9239C4.71429 24.8819 5.12819 23.8827 5.86494 23.1459C6.60169 22.4092 7.60094 21.9953 8.64286 21.9953C9.68478 21.9953 10.684 22.4092 11.4208 23.1459C12.1575 23.8827 12.5714 24.8819 12.5714 25.9239C12.5714 26.9658 12.1575 27.965 11.4208 28.7018C10.684 29.4385 9.68478 29.8524 8.64286 29.8524C7.60094 29.8524 6.60169 29.4385 5.86494 28.7018C5.12819 27.965 4.71429 26.9658 4.71429 25.9239ZM8.64286 24.3524C8.22609 24.3524 7.82639 24.518 7.53169 24.8127C7.23699 25.1074 7.07143 25.5071 7.07143 25.9239C7.07143 26.3406 7.23699 26.7403 7.53169 27.035C7.82639 27.3297 8.22609 27.4953 8.64286 27.4953C9.05963 27.4953 9.45933 27.3297 9.75403 27.035C10.0487 26.7403 10.2143 26.3406 10.2143 25.9239C10.2143 25.5071 10.0487 25.1074 9.75403 24.8127C9.45933 24.518 9.05963 24.3524 8.64286 24.3524ZM15.3214 12.5714C15.0089 12.5714 14.7091 12.6956 14.4881 12.9166C14.267 13.1377 14.1429 13.4374 14.1429 13.75C14.1429 14.0626 14.267 14.3624 14.4881 14.5834C14.7091 14.8044 15.0089 14.9286 15.3214 14.9286H28.6786C28.9912 14.9286 29.2909 14.8044 29.5119 14.5834C29.733 14.3624 29.8571 14.0626 29.8571 13.75C29.8571 13.4374 29.733 13.1377 29.5119 12.9166C29.2909 12.6956 28.9912 12.5714 28.6786 12.5714H15.3214ZM27.5 37.7143C30.209 37.7143 32.807 36.6381 34.7226 34.7226C36.6381 32.807 37.7143 30.209 37.7143 27.5C37.7143 24.791 36.6381 22.193 34.7226 20.2774C32.807 18.3619 30.209 17.2857 27.5 17.2857C24.791 17.2857 22.193 18.3619 20.2774 20.2774C18.3619 22.193 17.2857 24.791 17.2857 27.5C17.2857 30.209 18.3619 32.807 20.2774 34.7226C22.193 36.6381 24.791 37.7143 27.5 37.7143V37.7143ZM27.5 20.4286C27.7084 20.4286 27.9082 20.5114 28.0556 20.6587C28.2029 20.8061 28.2857 21.0059 28.2857 21.2143V26.7143H33.7857C33.9941 26.7143 34.194 26.7971 34.3413 26.9444C34.4887 27.0918 34.5714 27.2916 34.5714 27.5C34.5714 27.7084 34.4887 27.9082 34.3413 28.0556C34.194 28.2029 33.9941 28.2857 33.7857 28.2857H28.2857V33.7857C28.2857 33.9941 28.2029 34.194 28.0556 34.3413C27.9082 34.4887 27.7084 34.5714 27.5 34.5714C27.2916 34.5714 27.0918 34.4887 26.9444 34.3413C26.7971 34.194 26.7143 33.9941 26.7143 33.7857V28.2857H21.2143C21.0059 28.2857 20.8061 28.2029 20.6587 28.0556C20.5114 27.9082 20.4286 27.7084 20.4286 27.5C20.4286 27.2916 20.5114 27.0918 20.6587 26.9444C20.8061 26.7971 21.0059 26.7143 21.2143 26.7143H26.7143V21.2143C26.7143 21.0059 26.7971 20.8061 26.9444 20.6587C27.0918 20.5114 27.2916 20.4286 27.5 20.4286V20.4286ZM5.89286 4.71429C5.58028 4.71429 5.28051 4.83846 5.05948 5.05948C4.83846 5.28051 4.71429 5.58028 4.71429 5.89286C4.71429 6.20543 4.83846 6.50521 5.05948 6.72623C5.28051 6.94726 5.58028 7.07143 5.89286 7.07143H28.6786C28.9912 7.07143 29.2909 6.94726 29.5119 6.72623C29.733 6.50521 29.8571 6.20543 29.8571 5.89286C29.8571 5.58028 29.733 5.28051 29.5119 5.05948C29.2909 4.83846 28.9912 4.71429 28.6786 4.71429H5.89286Z'
+                          fill='white' />
+                      </svg>
+                      <span class='text-base font-medium text-white'>
+                        <form method="POST" action="{% url 'favorite'%}">
+                        {% csrf_token %}
+                        {{profile_form.as_p}}
+                        {{favorite_form.as_p}}
+                        <input type="hidden" name="supporttype" />
+                        <input type="submit" value="Add Recipe to Favorites" />
+                        </form>
+                    </span>
+                    </div>
+                  </button>
+              
+                  <!-- Button -->
+                  <button type='button'
+                    class='flex break-inside bg-black rounded-3xl px-8 py-4 mb-4 w-full dark:bg-slate-800 dark:text-white'>
+                    <div class='flex items-center justify-between flex-1'>
+                   <a href="{% url 'delete' cocktail.id %}"><span class='text-lg font-medium text-white'>Delete Favorite</span></a>
+                      <svg width='17' height='17' viewBox='0 0 17 17' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                        <path fillRule='evenodd' clipRule='evenodd'
+                          d='M0 8.71423C0 8.47852 0.094421 8.25246 0.262491 8.08578C0.430562 7.91911 0.658514 7.82547 0.896201 7.82547H13.9388L8.29808 2.23337C8.12979 2.06648 8.03525 1.84013 8.03525 1.60412C8.03525 1.36811 8.12979 1.14176 8.29808 0.974875C8.46636 0.807989 8.6946 0.714233 8.93259 0.714233C9.17057 0.714233 9.39882 0.807989 9.5671 0.974875L16.7367 8.08499C16.8202 8.16755 16.8864 8.26562 16.9316 8.3736C16.9767 8.48158 17 8.59733 17 8.71423C17 8.83114 16.9767 8.94689 16.9316 9.05487C16.8864 9.16284 16.8202 9.26092 16.7367 9.34348L9.5671 16.4536C9.39882 16.6205 9.17057 16.7142 8.93259 16.7142C8.6946 16.7142 8.46636 16.6205 8.29808 16.4536C8.12979 16.2867 8.03525 16.0604 8.03525 15.8243C8.03525 15.5883 8.12979 15.362 8.29808 15.1951L13.9388 9.603H0.896201C0.658514 9.603 0.430562 9.50936 0.262491 9.34268C0.094421 9.17601 0 8.94995 0 8.71423Z'
+                          fill='white' />
+                      </svg>
+                    </div>
+                  </button>
+                   <!-- Button -->
+                   <button type='button'
+                   class='flex break-inside bg-black rounded-3xl px-8 py-4 mb-4 w-full dark:bg-slate-800 dark:text-white'>
+                   <div class='flex items-center justify-between flex-1'>
+                  <a href="{% url 'updateRecipe' cocktail.id %}"><span class='text-lg font-medium text-white'>Edit Recipe</span></a>
+                     <svg width='17' height='17' viewBox='0 0 17 17' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                       <path fillRule='evenodd' clipRule='evenodd'
+                         d='M0 8.71423C0 8.47852 0.094421 8.25246 0.262491 8.08578C0.430562 7.91911 0.658514 7.82547 0.896201 7.82547H13.9388L8.29808 2.23337C8.12979 2.06648 8.03525 1.84013 8.03525 1.60412C8.03525 1.36811 8.12979 1.14176 8.29808 0.974875C8.46636 0.807989 8.6946 0.714233 8.93259 0.714233C9.17057 0.714233 9.39882 0.807989 9.5671 0.974875L16.7367 8.08499C16.8202 8.16755 16.8864 8.26562 16.9316 8.3736C16.9767 8.48158 17 8.59733 17 8.71423C17 8.83114 16.9767 8.94689 16.9316 9.05487C16.8864 9.16284 16.8202 9.26092 16.7367 9.34348L9.5671 16.4536C9.39882 16.6205 9.17057 16.7142 8.93259 16.7142C8.6946 16.7142 8.46636 16.6205 8.29808 16.4536C8.12979 16.2867 8.03525 16.0604 8.03525 15.8243C8.03525 15.5883 8.12979 15.362 8.29808 15.1951L13.9388 9.603H0.896201C0.658514 9.603 0.430562 9.50936 0.262491 9.34268C0.094421 9.17601 0 8.94995 0 8.71423Z'
+                         fill='white' />
+                     </svg>
+                   </div>
+                 </button>
+              
+                </div>
+              </div>
+            </div>
         </section>
         {% endblock %}
     </body>
