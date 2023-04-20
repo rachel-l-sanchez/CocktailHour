@@ -1,5 +1,7 @@
 # Cocktail Hour
 
+![dashboard](https://github.com/rachel-l-sanchez/CocktailHour/blob/2481729ff9e830fab42c7394b56e9732c4fe5c47/cocktail_imgs/Screen%20Shot%202023-04-20%20at%2011.57.03%20AM.png)
+
 ## Overview
 A cocktail recipe application using the cocktail API. Users can log in to their accounts and save their favorite recipes to experiment on their own
 
@@ -10,6 +12,7 @@ A cocktail recipe application using the cocktail API. Users can log in to their 
 4. Delete a recipe saved to your account
 5. View all recipes
 6. View one full recipe
+7. Search Images
 
 ## Code Sample
 ```
